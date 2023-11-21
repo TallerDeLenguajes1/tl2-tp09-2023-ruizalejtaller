@@ -1,6 +1,6 @@
 namespace EspTareas;
 
-public class Usuarios
+public class Usuario
 {
     private int id;
     string nombredeusuario;

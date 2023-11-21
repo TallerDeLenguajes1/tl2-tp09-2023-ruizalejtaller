@@ -8,24 +8,58 @@ public class TareasController : ControllerBase
 {
 
     private readonly ILogger<TareasController> _logger;
-    private UsuarioRepository UsersRepository;
+    private TareaRepository TareaRepository;
 
     public TareasController(ILogger<TareasController> logger)
     {
         _logger = logger;
-        UsersRepository = new UsuarioRepository();
+        TareaRepository = new TareaRepository();
     }
 
-    [HttpPost("CreateUser")]
-    public ActionResult CreateUser(Usuarios User)
+    [HttpPost("/api/tarea")]
+    public ActionResult CreateTarea(Tarea tarea)
     {
-        UsersRepository.Create(User);
+        TareaRepository.Create(tarea);
         return Ok();
     }
 
-    [HttpGet("GetAllUsers")]
-    public ActionResult<IEnumerable<Usuarios>> GetAllUsers()
+    [HttpPut("/api/tarea/{Id}")]
+    public ActionResult UpdateTarea(int Id, Tarea tarea)
     {
-        return Ok(UsersRepository.GetAll());
+        TareaRepository.Update(tarea, Id);
+        return Ok();
     }
+
+    [HttpPut("/api/tarea/{Id}/Estado{estado}")]
+    public ActionResult ActEstado(int Id, int estado)
+    {
+        TareaRepository.ActEstado(Id, estado);
+        return Ok();
+    }
+
+    [HttpGet("/api/tarea/usuario/{IdUser}")]
+    public ActionResult<IEnumerable<Tarea>> GetbyUser(int IdUser)
+    {
+        return Ok(TareaRepository.GetTareasByUser(IdUser));
+    }
+
+    [HttpGet("/api/tarea/tablero/{IdTab}")]
+    public ActionResult<IEnumerable<Tarea>> GetbyTab(int IdTab)
+    {
+        return Ok(TareaRepository.GetTareasByTab(IdTab));
+    }
+
+    [HttpGet("/api/tarea/{Estado}")]
+    public ActionResult<IEnumerable<Tarea>> GetbyEst(int Estado)
+    {
+        return Ok(TareaRepository.GetTareasByEst(Estado));
+    }
+
+    [HttpDelete("/api/tarea/{Id}")]
+    public ActionResult DelTarea(int Id)
+    {
+        TareaRepository.Remove(Id);
+        return Ok();
+    }
+
 }
